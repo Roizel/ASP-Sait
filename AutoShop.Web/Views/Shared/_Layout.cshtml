@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,6 +27,36 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Index">Авто</a>
+                        </li>
+                        @{
+                            if (Context.Request.Cookies.ContainsKey("IsAuth") == false)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Authorization">Увійти</a>
+                                </li>
+                            }
+                        }
+                        @{
+                            string IsAuth = Context.Request.Cookies["IsAuth"];
+                            if (IsAuth == "True")
+                            {
+                                string Login = Context.Request.Cookies["UserLogin"];
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ProfilePage">@Login</a>
+                                </li>
+                            }
+                        }
+                        @{
+                            string IsAuth2 = Context.Request.Cookies["IsAuth"];
+                            if (IsAuth2 == "True")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ExitFromAccount">Вийти з Акаунту</a>
+                                </li>
+                            }
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Registration">Реєстрація</a>
                         </li>
                     </ul>
                 </div>

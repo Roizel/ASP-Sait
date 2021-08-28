@@ -1,0 +1,53 @@
+﻿@model HomeIndexViewModel
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @{
+            int startPage = Model.Page - 3;
+            int endPage = Model.Page + 3;
+
+            int Previous = Model.Page - 1;
+            int Next = Model.Page + 1;
+
+            if (Model.Page < 2) { Previous = Model.Page; }
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-controller="Car" asp-route-page="@Previous" asp-route-searchAttribute="@Model.Search.searchAttribute">Prev.</a>
+            </li>
+            if (startPage >= 2)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-controller="Car" asp-route-page="1" asp-route-searchAttribute="@Model.Search.searchAttribute">1</a>
+                </li>
+            }
+            if (startPage > 2)
+            {
+                <li class="page-item"><a class="page-link" asp-action="Index">...</a></li>
+            }
+            for (int i = startPage; i <= endPage; i++)
+            {
+                if (i > 0 && i <= Model.PageCount)
+                {
+                    string active = i == Model.Page ? "active" : "";
+                    <li class="page-item @active">
+                        <a class="page-link" asp-action="Index" asp-controller="Car" asp-route-page="@i" asp-route-searchAttribute="@Model.Search.searchAttribute">@i</a>
+                    </li>
+                }
+            }
+            if (endPage < (Model.PageCount - 1))
+            {
+                <li class="page-item"><a class="page-link">...</a></li>
+            }
+            if (endPage <= (Model.PageCount - 1))
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-controller="Car" asp-route-page="@Model.PageCount" asp-route-searchAttribute="@Model.Search.searchAttribute">@Model.PageCount</a>
+                </li>
+            }
+            if (Model.Page > (Model.PageCount - 2)) { Next = Model.Page; }
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-controller="Car" asp-route-page="@Next" asp-route-searchAttribute="@Model.Search.searchAttribute">Next</a>
+            </li>
+        }
+    </ul>
+</nav>

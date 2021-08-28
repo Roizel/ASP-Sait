@@ -1,15 +1,15 @@
-﻿@model AutoShop.Web.Models.CarCreateViewModel
+﻿@model AutoShop.Web.Models.CarDeleteViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Delete";
 }
 
-<h1>Додати автомобіль</h1>
+<h1>Видалити автомобіль</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Delete">
 
             <div class="form-group">
                 <label asp-for="Mark" class="control-label"></label>
@@ -22,17 +22,17 @@
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" type="file" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
                 <input asp-for="Year" class="form-control" />
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Видалити" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -41,4 +41,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-

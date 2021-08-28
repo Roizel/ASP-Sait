@@ -1,0 +1,12 @@
+﻿@model ProfilePageViewModel
+<div>
+    <form asp-action="ExitFromAccount">
+        @{
+            Context.Response.Cookies.Delete("IsAuth");
+            Context.Response.Cookies.Delete("UserPass");
+            Context.Response.Cookies.Delete("UserLogin");
+            string cook = Context.Request.Cookies["IsAuth"];
+            <label>Ви успішно вийшли!</label>
+        }
+    </form>
+</div>
