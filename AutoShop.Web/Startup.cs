@@ -1,7 +1,9 @@
 using AutoShop.Domain;
+using AutoShop.Domain.Entities.Identity;
 using AutoShop.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,17 +31,28 @@ namespace AutoShop.Web
         {
             services.AddDbContext<AppEFContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.Stores.MaxLengthForKeys = 128;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+                .AddEntityFrameworkStores<AppEFContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/login");
 
             services.AddAutoMapper(
                typeof(CarProfile));
-            services.AddAutoMapper(
-              typeof(UserProfile));
 
             services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<AppRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -50,6 +63,20 @@ namespace AutoShop.Web
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+
+            if (roleManager.Roles.Count() == 0)
+            {
+                var result = roleManager.CreateAsync(new AppRole
+                {
+                    Name = "Admin"
+                }).Result;
+
+                result = roleManager.CreateAsync(new AppRole
+                {
+                    Name = "User"
+                }).Result;
+            }
+
 
             var dir = Path.Combine(Directory.GetCurrentDirectory(), "images");
             if (!Directory.Exists(dir))
@@ -62,6 +89,8 @@ namespace AutoShop.Web
                 RequestPath = "/images"
             });
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

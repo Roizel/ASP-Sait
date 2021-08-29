@@ -18,20 +18,8 @@ namespace AutoShop.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(UserAuthorizationViewModel userAuthorization)
+        public IActionResult Index()
         {
-            string auth = HttpContext.Request.Cookies["IsAuth"];
-            if (auth == "True")
-            {
-                string Pass = HttpContext.Request.Cookies["UserPass"];
-                string Login = HttpContext.Request.Cookies["UserLogin"];
-
-                if (Pass != null && Login != null)
-                {
-                    userAuthorization.IsAuth = true;
-                    userAuthorization.username = Login;
-                }
-            }
             return View();
         }
 

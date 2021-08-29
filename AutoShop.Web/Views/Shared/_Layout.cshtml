@@ -28,37 +28,27 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Index">Авто</a>
                         </li>
-                        @{
-                            if (Context.Request.Cookies.ContainsKey("IsAuth") == false)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Authorization">Увійти</a>
-                                </li>
-                            }
-                        }
-                        @{
-                            string IsAuth = Context.Request.Cookies["IsAuth"];
-                            if (IsAuth == "True")
-                            {
-                                string Login = Context.Request.Cookies["UserLogin"];
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ProfilePage">@Login</a>
-                                </li>
-                            }
-                        }
-                        @{
-                            string IsAuth2 = Context.Request.Cookies["IsAuth"];
-                            if (IsAuth2 == "True")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ExitFromAccount">Вийти з Акаунту</a>
-                                </li>
-                            }
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Registration">Реєстрація</a>
-                        </li>
                     </ul>
+
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Вихід</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Вхід</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Реєстрація</a>
+                            </li>
+                        }
+
+                    </ul>
+
                 </div>
             </div>
         </nav>
