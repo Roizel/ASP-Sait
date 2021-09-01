@@ -3,6 +3,7 @@ using AutoShop.Domain;
 using AutoShop.Domain.Entities;
 using AutoShop.Web.Models;
 using Bogus;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,6 +13,7 @@ using System.Linq;
 
 namespace AutoShop.Web.Controllers
 {
+    [Authorize]
     public class CarController : Controller
     {
         private readonly AppEFContext _context; /*Тут данні з БД чі для БД*/
@@ -27,25 +29,25 @@ namespace AutoShop.Web.Controllers
             //GenerateAuto(); /*НЕ включать якщо не хочеш більше машин)*/
         }
 
-        private void GenerateAuto()
-        {
-            var endDate = DateTime.Now;
-            var startDate = new DateTime(endDate.Year - 10,
-                endDate.Month, endDate.Day);
-            //використовуємо богус для генерації
-            var faker = new Faker<Car>("uk")
-                .RuleFor(x => x.Mark, f => f.Vehicle.Manufacturer())
-                .RuleFor(x => x.Model, f => f.Vehicle.Model())
-                .RuleFor(x => x.Year, f => f.Date.Between(startDate, endDate).Year);
-            int n = 1000;
-            for (int i = 0; i < n; i++)
-            {
-                var car = faker.Generate();
-                _context.Cars.Add(car);
-                _context.SaveChanges();
-            }
+        //private void GenerateAuto()
+        //{
+        //    var endDate = DateTime.Now;
+        //    var startDate = new DateTime(endDate.Year - 10,
+        //        endDate.Month, endDate.Day);
+        //    //використовуємо богус для генерації
+        //    var faker = new Faker<Car>("uk")
+        //        .RuleFor(x => x.Mark, f => f.Vehicle.Manufacturer())
+        //        .RuleFor(x => x.Model, f => f.Vehicle.Model())
+        //        .RuleFor(x => x.Year, f => f.Date.Between(startDate, endDate).Year);
+        //    int n = 1000;
+        //    for (int i = 0; i < n; i++)
+        //    {
+        //        var car = faker.Generate();
+        //        _context.Cars.Add(car);
+        //        _context.SaveChanges();
+        //    }
 
-        }
+        //}
         public IActionResult Index(SearchCarIndexModel search, int page = 1)
         {
             string markofcar = ""; /*From Search(On Sait)*/
@@ -124,16 +126,19 @@ namespace AutoShop.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete()
         {
             return View();
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Change()
         {
             return View();

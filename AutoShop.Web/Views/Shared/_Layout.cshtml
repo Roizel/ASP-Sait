@@ -46,7 +46,14 @@
                                 <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Реєстрація</a>
                             </li>
                         }
-
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Адмін панель</a>
+                            </li>
+                        }
                     </ul>
 
                 </div>
