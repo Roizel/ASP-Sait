@@ -1,4 +1,7 @@
 ﻿<h1>Список Користувачів</h1>
+<a asp-action="Create" class="btn btn-success">Додати Користувача</a>
+<a asp-action="Delete" class="btn btn-danger">Видалити Користувача</a>
+<a asp-action="Edit" class="btn btn-success">Редагувати Користувача</a>
 <table class="table">
     <thead>
         <tr>
@@ -10,10 +13,10 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <th scope="row">@item.Id</th>
-            <th>@item.Email</th>
-        </tr>
+            <tr>
+                <th scope="row">@item.Id</th>
+                <th>@item.Email</th>
+            </tr>
         }
     </tbody>
 </table>

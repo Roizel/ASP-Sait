@@ -14,10 +14,31 @@ namespace AutoShop.Web.Models
         [Required(ErrorMessage = "Required")]
         [EmailAddress(ErrorMessage = "Required")]
         public string Email { get; set; }
-        public UserManager<AppUser> _userManager;
-        public AdminViewModel(UserManager<AppUser> userManager)
-        {
-            _userManager = userManager;
-        }
+    }
+    public class CreateUserViewModel
+    {
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Required")]
+        [EmailAddress(ErrorMessage = "Required")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Required")]
+        public string Password { get; set; }
+    }
+    public class EditUserViewModel
+    {
+        [Required(ErrorMessage = "Required")]
+        public string Id { get; set; }
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Required")]
+        [EmailAddress(ErrorMessage = "Required")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Required")]
+        public string Password { get; set; }
+    }
+    public class DeleteUserViewModel
+    {
+        [Display(Name = "Id")]
+        [Required(ErrorMessage = "Required")]
+        public string Id { get; set; }
     }
 }
