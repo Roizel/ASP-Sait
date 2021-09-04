@@ -1,6 +1,7 @@
 ﻿using AutoShop.Domain.Entities;
 using AutoShop.Domain.Entities.Identity;
 using AutoShop.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,14 +11,15 @@ using System.Threading.Tasks;
 
 namespace AutoShop.Web.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        public AdminController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        UserManager<AppUser> _userManager;
+        RoleManager<AppRole> _roleManager;
+        public AdminController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
+            _roleManager = roleManager;
         }
         public IActionResult Index() => View(_userManager.Users.ToList());
         [HttpGet]
@@ -47,8 +49,10 @@ namespace AutoShop.Web.Controllers
             }
             else
             {
-                AppUser user = new AppUser { Email = model.Email, UserName = model.Email};
+                string[] nameUser = model.Email.Split(new char[] { '@' });
+                AppUser user = new AppUser { Email = model.Email, UserName = nameUser[0]};
                 var result = await _userManager.CreateAsync(user, model.Password);
+                await _userManager.AddToRoleAsync(user, model.RoleSelect);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Admin");
@@ -87,8 +91,10 @@ namespace AutoShop.Web.Controllers
                 AppUser user = await _userManager.FindByIdAsync(model.Id);
                 if (user != null)
                 {
+                    string[] nameUser = model.Email.Split(new char[] { '@' });
                     user.Email = model.Email;
-                    user.PasswordHash = model.Password;
+                    user.UserName = nameUser[0];
+                    await _userManager.AddToRoleAsync(user, model.RoleSelect);
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {

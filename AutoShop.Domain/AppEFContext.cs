@@ -1,4 +1,5 @@
-﻿using AutoShop.Domain.Entities;
+﻿using AutoShop.Domain.Configuration.Identity;
+using AutoShop.Domain.Entities;
 using AutoShop.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -22,5 +23,14 @@ namespace AutoShop.Domain
         }
 
         public DbSet<Car> Cars { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            #region Identity
+            builder.ApplyConfiguration(new AppUserRoleConfiguration());
+            #endregion
+
+        }
     }
 }

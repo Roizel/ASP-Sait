@@ -23,6 +23,8 @@ namespace AutoShop.Web.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "Required")]
         public string Password { get; set; }
+       
+        public string RoleSelect { get; set; }
     }
     public class EditUserViewModel
     {
@@ -34,6 +36,9 @@ namespace AutoShop.Web.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "Required")]
         public string Password { get; set; }
+        [Display(Name = "Role")]
+        [Required(ErrorMessage = "Required")]
+        public string RoleSelect { get; set; }
     }
     public class DeleteUserViewModel
     {
