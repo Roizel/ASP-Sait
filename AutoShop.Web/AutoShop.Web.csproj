@@ -21,5 +21,9 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\AutoShop.Domain\AutoShop.Domain.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="usersImages\" />
+	</ItemGroup>
 	
 </Project>

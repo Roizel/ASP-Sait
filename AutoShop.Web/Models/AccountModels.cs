@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,5 +30,14 @@ namespace AutoShop.Web.Models
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Invalid Password")]
         public string Password { get; set; }
+    }
+    public class ProfilePageVM
+    {
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Required")]
+        [EmailAddress(ErrorMessage = "Required")]
+        public string Email { get; set; }
+        public string PathImg { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

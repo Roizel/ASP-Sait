@@ -7,17 +7,19 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Role</th>
+            <th scope="col">Photo</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <th scope="row">@item.Id</th>
-                <th>@item.Email</th>
-                @*<th>@item</th>*@
-            </tr>
+        <tr>
+            <th scope="row">@item.Id</th>
+            <th>@item.Email</th>
+            <th> 
+            <img src="/usersImages/@item.PathImg" alt="No Image" height="100" />
+            </th>
+        </tr>
         }
     </tbody>
 </table>

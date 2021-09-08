@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -84,6 +85,7 @@ namespace AutoShop.Web.Controllers
                 return RedirectToAction("Index", "Admin");
             }
         }
+        [HttpPost]
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -92,8 +94,27 @@ namespace AutoShop.Web.Controllers
                 if (user != null)
                 {
                     string[] nameUser = model.Email.Split(new char[] { '@' });
+
+                    string fileName = "";
+                    if (model.Image != null)
+                    {
+                        if (user.PathImg != null)
+                        {
+                            var directory = Path.Combine(Directory.GetCurrentDirectory(), "usersImages");
+                            var FilePath = Path.Combine(directory, user.PathImg);
+                            System.IO.File.Delete(FilePath);
+                        }
+                        var ext = Path.GetExtension(model.Image.FileName);
+                        fileName = Path.GetRandomFileName() + ext;
+                        var dir = Path.Combine(Directory.GetCurrentDirectory(), "usersImages");
+                        var filePath = Path.Combine(dir, fileName);
+                        using (var stream = System.IO.File.Create(filePath)) { model.Image.CopyTo(stream); }
+                        user.PathImg = fileName;
+                    }
+
                     user.Email = model.Email;
                     user.UserName = nameUser[0];
+
                     await _userManager.AddToRoleAsync(user, model.RoleSelect);
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
@@ -105,7 +126,6 @@ namespace AutoShop.Web.Controllers
                         foreach (var error in result.Errors)
                         {
                             ModelState.AddModelError(string.Empty, error.Description);
-                            return View();
                         }
                     }
                 }

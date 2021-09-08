@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,11 @@ namespace AutoShop.Web.Controllers
         [HttpGet]
         [Route("login")]
         public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult ProfilePage()
         {
             return View();
         }
@@ -90,6 +96,26 @@ namespace AutoShop.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public IActionResult ProfilePage(ProfilePageVM page)
+        {
+            if (!ModelState.IsValid)
+                return View(page);
+
+            string fileName = "";
+            if (page.Image != null)
+            {
+                var ext = Path.GetExtension(page.Image.FileName);
+                fileName = Path.GetRandomFileName() + ext;
+                var dir = Path.Combine(Directory.GetCurrentDirectory(), "usersImages");
+                var filePath = Path.Combine(dir, fileName);
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    page.Image.CopyTo(stream);
+                }
+            }
+            return View();
         }
 
     }

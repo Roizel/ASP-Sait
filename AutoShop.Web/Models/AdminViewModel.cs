@@ -1,4 +1,5 @@
 ﻿using AutoShop.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace AutoShop.Web.Models
         [Required(ErrorMessage = "Required")]
         [EmailAddress(ErrorMessage = "Required")]
         public string Email { get; set; }
+        public string PathImg { get; set; }
     }
     public class CreateUserViewModel
     {
@@ -35,10 +37,9 @@ namespace AutoShop.Web.Models
         [EmailAddress(ErrorMessage = "Required")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Required")]
-        public string Password { get; set; }
         [Display(Name = "Role")]
-        [Required(ErrorMessage = "Required")]
         public string RoleSelect { get; set; }
+        public IFormFile Image { get; set; }
     }
     public class DeleteUserViewModel
     {

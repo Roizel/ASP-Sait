@@ -88,6 +88,16 @@ namespace AutoShop.Web
                 FileProvider = new PhysicalFileProvider(dir),
                 RequestPath = "/images"
             });
+
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), "usersImages");
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(directory),
+                RequestPath = "/usersImages"
+            });
             app.UseRouting();
 
             app.UseAuthentication();
